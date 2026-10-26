@@ -1,0 +1,772 @@
+/* ============================================================
+   legitsdev — личная страница
+   Стили извлечены из оригинального проекта (Next.js + Tailwind)
+   и почищены: убраны бандл-мусор и неиспользуемые утилиты.
+   ============================================================ */
+
+/* ---------- Тема (базовые переменные Tailwind) ---------- */
+:root,
+:host {
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  --spacing: 0.25rem;
+  --default-font-family: var(--font-sans);
+  --default-mono-font-family: var(--font-mono);
+}
+
+/* ---------- Сброс (Tailwind preflight) ---------- */
+*,
+::after,
+::before {
+  box-sizing: border-box;
+  border: 0 solid;
+  margin: 0;
+  padding: 0;
+}
+
+::backdrop {
+  box-sizing: border-box;
+  border: 0 solid;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+:host {
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  line-height: 1.5;
+  font-family: var(
+    --default-font-family,
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
+  );
+  -webkit-tap-highlight-color: transparent;
+}
+
+hr {
+  height: 0;
+  color: inherit;
+  border-top-width: 1px;
+}
+
+abbr:where([title]) {
+  -webkit-text-decoration: underline dotted;
+  text-decoration: underline dotted;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(
+    --default-mono-font-family,
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace
+  );
+  font-size: 1em;
+}
+
+small {
+  font-size: 80%;
+}
+
+sub,
+sup {
+  vertical-align: baseline;
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+}
+
+sub { bottom: -0.25em; }
+sup { top: -0.5em; }
+
+table {
+  text-indent: 0;
+  border-color: inherit;
+  border-collapse: collapse;
+}
+
+:-moz-focusring { outline: auto; }
+progress { vertical-align: baseline; }
+summary { display: list-item; }
+
+ol,
+ul,
+menu {
+  list-style: none;
+}
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  vertical-align: middle;
+  display: block;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+select,
+optgroup,
+textarea {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  opacity: 1;
+  background-color: #0000;
+  border-radius: 0;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+  appearance: button;
+}
+
+input,
+textarea {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+::-webkit-search-decoration { -webkit-appearance: none; }
+::-webkit-file-upload-button { -webkit-appearance: button; }
+
+::placeholder {
+  opacity: 1;
+  color: color-mix(in oklab, currentColor 50%, #0000);
+}
+
+[disabled],
+[disabled]::placeholder {
+  cursor: default;
+  opacity: 1;
+}
+
+[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+:focus-visible { outline: auto; }
+
+[type="search"] { -webkit-appearance: textfield; }
+
+/* ---------- Глобальные стили страницы ---------- */
+:root {
+  --background: #1a1a1a;
+  --foreground: #ededed;
+  color-scheme: dark;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #141414;
+}
+
+/* обои: sticky-слой вместо fixed — на мобильных fixed фон дёргается при скролле.
+   Внешний слой (sticky + overflow:hidden) не даёт выйти за экран,
+   внутренний (-40px запас) двигается и зумится внутри — переполнения нет */
+.background {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  margin-bottom: -100vh;
+  margin-bottom: -100dvh;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.background-img {
+  position: absolute;
+  inset: -40px;
+  /* затемнение (0.65) сразу в одном слое с обоями — меньше слоёв, плавнее скролл */
+  background:
+    linear-gradient(rgba(20, 20, 20, 0.65), rgba(20, 20, 20, 0.65)),
+    url("assets/Walpepers.webp") center / cover no-repeat;
+  will-change: transform;
+}
+
+/* затемнение живёт внутри .background-img — отдельный fixed-слой не нужен */
+
+/* запрет перетаскивания картинок */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline-offset: 2px;
+  outline: 2px solid #fff;
+}
+
+/* ---------- Каркас страницы ---------- */
+.page-shell {
+  max-width: 768px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 20px 16px 24px;
+}
+
+/* ---------- Шапка профиля ---------- */
+.profile-header {
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 26px;
+  display: flex;
+}
+
+/* ---------- Аватар: фото + неоновая рамка frame-avatar.png ---------- */
+.avatar-ring {
+  aspect-ratio: 1;
+  flex: none;
+  width: 96px;
+  position: relative;
+}
+
+.avatar-image-wrap {
+  position: absolute;
+  inset: 9px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+.avatar-image-wrap img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  animation: frame-glow 3s ease-in-out infinite;
+}
+
+@keyframes frame-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 4px rgba(135, 255, 124, 0.25));
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgba(135, 255, 124, 0.65));
+  }
+}
+
+.profile-copy {
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  display: flex;
+}
+
+.profile-title-row {
+  align-items: center;
+  gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* ---------- Переключатель языка (правый верхний угол) ---------- */
+.lang-switch {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  z-index: 10;
+  align-items: center;
+  gap: 2px;
+  display: flex;
+  /* без backdrop-filter: на телефонах он заставляет фон перерисовываться
+     каждый кадр и дёргается при скролле; чуть плотнее фон вместо него */
+  background: #141414b3;
+  border: 1px solid #ffffff1f;
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.lang-switch button {
+  color: #6b7280;
+  cursor: pointer;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 14px;
+  letter-spacing: 0.04em;
+  transition: color 0.16s, border-color 0.16s, background-color 0.16s;
+}
+
+.lang-switch button:hover {
+  color: #d1d5db;
+}
+
+.lang-switch button.is-active {
+  color: #ededed;
+  border-color: #ffffff2e;
+  background: #ffffff14;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 36px;
+}
+
+.profile-copy p {
+  color: #d1d5db;
+  max-width: 512px;
+  font-size: 14px;
+  line-height: 22.75px;
+}
+
+/* ---------- Соцсети ---------- */
+.socials {
+  align-items: center;
+  gap: 8px;
+  display: flex;
+}
+
+.social-button {
+  color: #9ca3af;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  transition: all 0.2s;
+  display: inline-grid;
+  position: relative;
+}
+
+.social-button svg {
+  width: 62%;
+  height: 62%;
+}
+
+.social-button:hover {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* ---------- Секции ---------- */
+.section-stack > * + * {
+  margin-top: 24px;
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+/* ---------- Проекты ---------- */
+.projects-list {
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.projects-list li {
+  display: flex;
+}
+
+.project-card {
+  width: 100%;
+  min-width: 0; /* карточка может сжиматься — многоточие работает на мобильных */
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+  border-radius: 6px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-flex;
+}
+
+.project-card:hover {
+  color: #fff;
+  background: #ffffff4d;
+}
+
+.card-copy {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: -0.025em;
+  min-width: 0;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+.card-copy i {
+  color: #eab308;
+  margin-right: 8px;
+  font-size: 12px;
+  font-style: normal;
+}
+
+.card-copy span {
+  color: #9ca3af;
+  margin-left: 6px;
+}
+
+.project-card:hover .card-copy span,
+.project-card:hover > span[aria-hidden="true"] {
+  color: #d1d5db;
+}
+
+.project-card > span[aria-hidden="true"] {
+  color: #9ca3af;
+  flex: none;
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+/* проекты в разработке: без ссылки, но hover — как у обычных карточек */
+.project-card--wip {
+  cursor: default;
+}
+
+.card-wip {
+  color: #9ca3af;
+  flex: none;
+  margin-left: 8px;
+  border: 1px solid #ffffff2e;
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 10px;
+  line-height: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.project-card--wip:hover .card-wip {
+  border-color: #ffffff4d;
+  color: #d1d5db;
+}
+
+.aside-note {
+  color: #6b7280;
+  margin-top: 12px;
+  padding: 0 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+/* ---------- Услуги ---------- */
+.services-intro {
+  color: #d1d5db;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.services-panel {
+  background: #ffffff1a;
+  border-radius: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  display: flex;
+}
+
+.services-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: contents;
+}
+
+.service-card {
+  color: #d1d5db;
+  background: #0000002e;
+  border-radius: 4px;
+  padding: 4px 7px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.services-cta {
+  color: #111;
+  letter-spacing: -0.01em;
+  box-shadow: none;
+  background: #fff;
+  border: 0;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  margin-left: auto;
+  padding: 7px 11px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  text-decoration: none;
+  transition: transform 0.16s, background-color 0.16s, box-shadow 0.16s;
+  display: inline-flex;
+}
+
+.services-cta:hover {
+  background: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+/* ---------- Языки (карточка в стиле github-readme-stats) ---------- */
+.langs-panel {
+  background: #ffffff14;
+  border-radius: 8px;
+  width: 100%;
+  padding: 12px 14px;
+  display: flex;
+}
+
+.langs-list {
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  width: 100%;
+}
+
+.lang-row {
+  align-items: center;
+  gap: 10px;
+  display: flex;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.lang-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lang-color);
+  flex: none;
+}
+
+.lang-name {
+  width: 104px;
+  color: #d1d5db;
+  flex: none;
+  letter-spacing: -0.01em;
+}
+
+.lang-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: #ffffff1f;
+  overflow: hidden;
+}
+
+.lang-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--lang-color);
+}
+
+.lang-percent {
+  width: 36px;
+  text-align: right;
+  color: #9ca3af;
+  flex: none;
+}
+
+/* ---------- Футер ---------- */
+.site-footer {
+  margin-top: 24px;
+  padding: 0 12px;
+}
+
+.site-footer p {
+  color: #6b7280;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+/* ---------- Анимации ---------- */
+/* рамка аватара — см. блок «Аватар» выше (frame-glow) */
+
+/* ---------- Анимация при загрузке страницы ----------
+   текст всплывает, полосы языков заполняются с нуля */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes bar-fill {
+    from {
+      width: 0;
+    }
+  }
+
+  .profile-header,
+  .section-stack > section,
+  .site-footer,
+  .projects-list li,
+  .aside-note {
+    animation: rise-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .profile-header { animation-delay: 0.05s; }
+
+  /* секции: проекты → языки → услуги */
+  .section-stack > section:nth-child(1) { animation-delay: 0.18s; }
+  .section-stack > section:nth-child(2) { animation-delay: 0.42s; }
+  .section-stack > section:nth-child(3) { animation-delay: 0.55s; }
+
+  /* карточки проектов по одной */
+  .projects-list li:nth-child(1) { animation-delay: 0.24s; }
+  .projects-list li:nth-child(2) { animation-delay: 0.32s; }
+  .projects-list li:nth-child(3) { animation-delay: 0.40s; }
+
+  .aside-note { animation-delay: 0.50s; }
+
+  .site-footer { animation-delay: 0.68s; }
+
+  /* полосы языков заполняются, каждая со своей задержкой */
+  .lang-row .lang-bar span {
+    animation: bar-fill 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .lang-row:nth-child(1) .lang-bar span { animation-delay: 0.46s; }
+  .lang-row:nth-child(2) .lang-bar span { animation-delay: 0.54s; }
+  .lang-row:nth-child(3) .lang-bar span { animation-delay: 0.62s; }
+  .lang-row:nth-child(4) .lang-bar span { animation-delay: 0.70s; }
+  .lang-row:nth-child(5) .lang-bar span { animation-delay: 0.78s; }
+  .lang-row:nth-child(6) .lang-bar span { animation-delay: 0.86s; }
+  .lang-row:nth-child(7) .lang-bar span { animation-delay: 0.94s; }
+}
+
+/* ---------- Адаптив ---------- */
+@media (max-width: 480px) {
+  /* шапка столбиком: аватар сверху, текст на всю ширину */
+  .profile-header {
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .services-cta {
+    margin-left: 0;
+  }
+
+  .lang-name {
+    width: 88px;
+  }
+}
+
+/* тач-устройства: иконки соцсетей чуть крупнее под палец */
+@media (hover: none) {
+  .social-button {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (min-width: 640px) {
+  .page-shell {
+    padding: 28px 32px 36px;
+  }
+
+  h1 {
+    font-size: 36px;
+    line-height: 40px;
+  }
+}
+
+@media (min-width: 768px) {
+  .page-shell {
+    padding: 36px 96px;
+  }
+}
