@@ -1,0 +1,122 @@
+{%- comment -%}
+Search modal: opened by the magnifier button in the header (or Ctrl+K).
+Fetches /search.json (generated at build time) and filters it client-side.
+Section 1: posts matching by title/excerpt.
+Section 2 (below divider): text mentions with highlighted snippets.
+{%- endcomment -%}
+
+{%- assign lang = page.lang | default: site.lang | default: "en" -%}
+{%- assign t = site.data.i18n[lang] -%}
+
+<div id="site-search" class="search-overlay" hidden>
+    <div class="search-backdrop" data-search-close></div>
+    <div class="search-dialog" role="dialog" aria-modal="true" aria-label="{{ t.search }}">
+        <div class="search-bar">
+            <input id="search-input" type="search" autocomplete="off"
+                   placeholder="{{ t.search_placeholder }}" aria-label="{{ t.search }}">
+            <button id="search-go" type="button" aria-label="{{ t.search }}">
+                <svg class="svg-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
+        <div id="search-results" class="search-results" aria-live="polite"></div>
+    </div>
+</div>
+
+<script>
+(function () {
+    var S = {
+        posts:    {{ t.search_posts | jsonify }},
+        mentions: {{ t.search_mentions | jsonify }},
+        none:     {{ t.search_no_results | jsonify }}
+    };
+    var overlay = document.getElementById('site-search');
+    var input   = document.getElementById('search-input');
+    var goBtn   = document.getElementById('search-go');
+    var results = document.getElementById('search-results');
+    var idx = null;
+
+    function open()  { overlay.hidden = false; document.body.classList.add('search-open'); input.focus(); }
+    function close() { overlay.hidden = true;  document.body.classList.remove('search-open'); }
+    function toggle() { overlay.hidden ? open() : close(); }
+
+    Array.prototype.forEach.call(document.querySelectorAll('[data-search-toggle]'), function (b) {
+        b.addEventListener('click', toggle);
+    });
+    Array.prototype.forEach.call(overlay.querySelectorAll('[data-search-close]'), function (b) {
+        b.addEventListener('click', close);
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { close(); }
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); toggle(); }
+    });
+
+    function load(cb) {
+        if (idx) { cb(); return; }
+        fetch('{{ "/search.json" | relative_url }}')
+            .then(function (r) { return r.json(); })
+            .then(function (d) { idx = d; cb(); });
+    }
+
+    function esc(s) {
+        var d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+    }
+
+    function snippet(text, q) {
+        var i = text.toLowerCase().indexOf(q.toLowerCase());
+        if (i < 0) { return esc(text.slice(0, 150)) + '…'; }
+        var start = Math.max(0, i - 70);
+        return (start > 0 ? '… ' : '') +
+            esc(text.slice(start, i)) +
+            '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' +
+            esc(text.slice(i + q.length, i + q.length + 130)) + '…';
+    }
+
+    function run() {
+        var q = input.value.trim();
+        if (q.length < 2) { results.innerHTML = ''; return; }
+        load(function () {
+            var ql = q.toLowerCase();
+            var posts = [], mentions = [];
+            idx.forEach(function (p) {
+                if (p.title.toLowerCase().indexOf(ql) > -1 ||
+                    p.excerpt.toLowerCase().indexOf(ql) > -1) {
+                    posts.push(p);
+                }
+                if (p.content.toLowerCase().indexOf(ql) > -1) {
+                    mentions.push(p);
+                }
+            });
+
+            var h = '';
+            if (posts.length) {
+                h += '<p class="search-heading">' + S.posts + '</p><ul class="search-posts">';
+                posts.forEach(function (p) {
+                    h += '<li><a href="' + p.url + '">' +
+                         '<span class="search-lang">' + p.lang + '</span>' + esc(p.title) +
+                         '</a><span class="search-date">' + p.date + '</span></li>';
+                });
+                h += '</ul>';
+            }
+            if (mentions.length) {
+                h += '<hr class="search-sep"><p class="search-heading">' + S.mentions + '</p><ul class="search-mentions">';
+                mentions.slice(0, 10).forEach(function (p) {
+                    h += '<li><a href="' + p.url + '">' + esc(p.title) + '</a>' +
+                         '<p class="search-snippet">' + snippet(p.content, q) + '</p></li>';
+                });
+                h += '</ul>';
+            }
+            if (!h) { h = '<p class="search-none">' + S.none + '</p>'; }
+            results.innerHTML = h;
+        });
+    }
+
+    goBtn.addEventListener('click', run);
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { run(); }
+    });
+})();
+</script>

@@ -1,0 +1,56 @@
+name: Build site (bio + blog) and deploy to Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true
+          working-directory: blog
+
+      - name: Build blog (Jekyll)
+        working-directory: blog
+        run: bundle exec jekyll build
+        env:
+          JEKYLL_ENV: production
+
+      - name: Stage bio site + blog together
+        run: |
+          mkdir _stage
+          mv blog/_site _stage/blog
+          for f in index.html main.js styles.css; do cp "$f" _stage/; done
+          cp -r assets _stage/assets
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _stage
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

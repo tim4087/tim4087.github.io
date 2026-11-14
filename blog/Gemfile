@@ -1,0 +1,13 @@
+source "https://rubygems.org"
+
+gem "jekyll", "~> 4.4"
+
+group :jekyll_plugins do
+  gem "jekyll-feed", "~> 0.17"
+end
+
+# Shims needed by Jekyll on Ruby 3.4+
+gem "csv"
+gem "base64"
+gem "bigdecimal"
+gem "webrick"

@@ -1,0 +1,41 @@
+---
+layout: default
+---
+
+{%- comment -%}
+Language-aware home page: shows only posts whose `lang`
+matches the page language (EN by default via _config.yml defaults).
+{%- endcomment -%}
+
+{%- assign lang = page.lang | default: site.lang | default: "en" -%}
+{%- assign t = site.data.i18n[lang] -%}
+{%- assign lang_posts = site.posts | where: "lang", lang -%}
+
+<div class="home">
+
+    {{ content }}
+
+    {%- if lang_posts.size > 0 -%}
+    <p class="post-list-heading">{{ page.list_title | default: t.recent_posts }}</p>
+    <ul class="post-list">
+        {%- for post in lang_posts -%}
+        <li>
+            {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+            <span class="post-meta">{{ post.date | date: date_format }}</span>
+            <h3>
+                <a class="post-link" href="{{ post.url | relative_url }}">
+                    {{ post.title | escape }}
+                </a>
+            </h3>
+
+            {%- if site.show_excerpts -%}
+            <span class="post-excerpts">
+                {{ post.excerpt }}
+            </span>
+            {%- endif -%}
+        </li>
+        {%- endfor -%}
+    </ul>
+    {%- endif -%}
+
+</div>

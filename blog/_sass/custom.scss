@@ -1,0 +1,169 @@
+@import "minima";
+
+// applied to image with captions
+img + em {
+  text-align: center;
+  display: block;
+  color: $grey-color;
+}
+
+// footer version line
+.footer-version {
+  font-size: $small-font-size;
+  color: $grey-color;
+  margin-bottom: $spacing-unit / 2;
+}
+
+// language switcher in the site header
+.lang-switch {
+  margin-left: 20px;
+  font-size: $small-font-size;
+
+  a {
+    margin-left: 6px;
+    text-transform: uppercase;
+
+    &.active {
+      font-weight: 700;
+      color: $text-color;
+    }
+  }
+}
+
+// search: header button + modal
+.search-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 2px;
+  vertical-align: middle;
+  margin-left: 20px;
+
+  .svg-icon {
+    width: 18px;
+    height: 18px;
+    fill: $grey-color-dark;
+  }
+
+  &:hover .svg-icon {
+    fill: $text-color;
+  }
+}
+
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.search-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.search-dialog {
+  position: relative;
+  width: calc(100% - (#{$spacing-unit}));
+  max-width: 640px;
+  margin: 12vh auto 0;
+  background-color: $background-color;
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  padding: $spacing-unit / 2;
+}
+
+.search-bar {
+  display: flex;
+  gap: 8px;
+
+  #search-input {
+    flex: 1;
+    font-family: inherit;
+    font-size: 1.05rem;
+    padding: 8px 12px;
+    border: 1px solid $grey-color-light;
+    border-radius: 6px;
+  }
+
+  #search-go {
+    background-color: $red-wine;
+    border: none;
+    border-radius: 6px;
+    padding: 0 14px;
+    cursor: pointer;
+
+    .svg-icon {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+  }
+}
+
+.search-results {
+  max-height: 55vh;
+  overflow-y: auto;
+  margin-top: $spacing-unit / 2;
+}
+
+.search-heading {
+  font-size: $small-font-size;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $grey-color;
+  margin-bottom: 8px;
+}
+
+.search-posts,
+.search-mentions {
+  list-style: none;
+  margin-left: 0;
+
+  li {
+    margin-bottom: 10px;
+  }
+}
+
+.search-lang {
+  display: inline-block;
+  font-size: 11px;
+  text-transform: uppercase;
+  border: 1px solid $grey-color-light;
+  border-radius: 3px;
+  padding: 0 5px;
+  margin-right: 8px;
+  color: $grey-color;
+}
+
+.search-date {
+  display: block;
+  font-size: $small-font-size;
+  color: $grey-color;
+  margin: 2px 0 0 0;
+}
+
+.search-sep {
+  border: 0;
+  border-top: 1px solid $grey-color-light;
+  margin: $spacing-unit / 2 0;
+}
+
+.search-snippet {
+  font-size: $small-font-size;
+  color: $grey-color;
+  margin: 2px 0 12px 0;
+}
+
+.search-none {
+  color: $grey-color;
+}
+
+mark {
+  background-color: #fff3c4;
+  padding: 0 2px;
+}

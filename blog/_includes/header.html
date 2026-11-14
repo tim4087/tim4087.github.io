@@ -1,0 +1,40 @@
+{%- comment -%}
+Header with a language switcher.
+
+`lang` is taken from the current page's front matter (or site default).
+`site.data.i18n` holds UI strings per language (see _data/i18n.yml).
+{%- endcomment -%}
+
+{%- assign lang = page.lang | default: site.lang | default: "en" -%}
+{%- assign t = site.data.i18n[lang] -%}
+
+{%- case lang -%}
+    {%- when "ru" -%}{%- assign about_url = "/ru/about/" -%}
+    {%- when "es" -%}{%- assign about_url = "/es/about/" -%}
+    {%- else -%}{%- assign about_url = "/about/" -%}
+{%- endcase -%}
+
+<header class="site-header" role="banner">
+    <div class="wrapper">
+
+        <a class="site-title" href="{{ "/" | relative_url }}">
+            {{ site.title | escape }}
+        </a>
+
+        <nav class="site-nav">
+            <a class="page-link" href="{{ about_url | relative_url }}">{{ t.about }}</a>
+
+            <button class="search-toggle" data-search-toggle aria-label="{{ t.search }}" title="{{ t.search }} (Ctrl+K)">
+                <svg class="svg-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/>
+                </svg>
+            </button>
+
+            <span class="lang-switch" aria-label="language">
+                <a href="{{ "/" | relative_url }}" class="{% if lang == 'en' %}active{% endif %}">en</a>
+                <a href="{{ "/ru/" | relative_url }}" class="{% if lang == 'ru' %}active{% endif %}">ru</a>
+                <a href="{{ "/es/" | relative_url }}" class="{% if lang == 'es' %}active{% endif %}">es</a>
+            </span>
+        </nav>
+    </div>
+</header>

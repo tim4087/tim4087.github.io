@@ -1,0 +1,52 @@
+# Site settings — доступны в шаблонах как {{ site.title }} и т.д.
+
+title: Tim4087 blog
+version: "1.0"
+email:
+description: >-
+  Personal blog of Tim4087 — notes on code and everything else,
+  in Russian, English and Spanish.
+baseurl: "/blog"
+url: "https://tim4087.github.io"
+github_username: Tim4087
+
+# Languages: default language + list of supported ones
+lang: en
+languages: ["en", "ru", "es"]
+
+show_excerpts: true
+excerpt_separator: <!--more-->
+
+# Build settings
+exclude:
+  - deploy.sh
+  - serve-dev.sh
+  - new-post.sh
+plugins:
+  - jekyll-feed
+
+# Silence Sass deprecation warnings from the legacy minima stylesheets
+sass:
+  quiet_deps: true
+  silence_deprecations:
+    - import
+    - global-builtin
+    - color-functions
+    - slash-div
+
+# Front matter defaults: every post without explicit `lang` is English.
+# Front matter in the post itself always wins over defaults.
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      lang: en
+  - scope:
+      path: "ru/*"
+    values:
+      lang: ru
+  - scope:
+      path: "es/*"
+    values:
+      lang: es
