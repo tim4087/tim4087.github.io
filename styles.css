@@ -770,3 +770,32 @@ h2 {
     padding: 36px 96px;
   }
 }
+
+/* ======= Кнопка «Блог // Новости» ======= */
+.blog-cta {
+  margin: 4px 0 6px;
+}
+
+.blog-button {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid #ffffff26;
+  border-radius: 6px;
+  background: #ffffff0f;
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.blog-button:hover {
+  color: #fff;
+  background: #ffffff1f;
+  border-color: #eab30866;
+}
+
+.blog-button .card-copy {
+  font-size: 14px;
+}

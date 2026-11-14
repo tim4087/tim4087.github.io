@@ -1,3 +1,5 @@
+{%- assign f_lang = page.lang | default: site.lang | default: "en" -%}
+{%- assign f_t = site.data.i18n[f_lang] -%}
 <footer class="site-footer h-card">
     <data class="u-url" href="{{ "/" | relative_url }}"></data>
     <div class="wrapper">
@@ -17,7 +19,7 @@
                 </ul>
             </div>
             <div class="footer-col one-half">
-                <p>{{- site.description | escape -}}</p>
+                <p>{{- f_t.footer_desc | default: site.description | escape -}}</p>
             </div>
             <div class="social-links">
                 {%- include social.html -%}

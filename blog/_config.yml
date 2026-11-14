@@ -4,7 +4,7 @@ title: Tim4087 blog
 version: "1.0"
 email:
 description: >-
-  Personal blog of Tim4087 — notes on code and everything else,
+  Personal blog of Tim4087 — notes on tech, AI and my own projects,
   in Russian, English and Spanish.
 baseurl: "/blog"
 url: "https://tim4087.github.io"

@@ -5,5 +5,6 @@ lang: es
 permalink: /es/
 ---
 
-¡Bienvenido a mi blog! Escribo sobre código y todo lo que me interesa —
-en [español]({{ site.baseurl }}/es/), [inglés]({{ site.baseurl }}/) y [ruso]({{ site.baseurl }}/ru/).
+¡Bienvenido! Soy **Tim**, desarrollador full-stack y creador de [StartPOZI](https://startpozi.com/).
+Aquí escribo sobre tecnología e IA, analizo las noticias recientes y cuento cómo se
+construyen mis proyectos — en [español]({{ site.baseurl }}/es/), [inglés]({{ site.baseurl }}/) y [ruso]({{ site.baseurl }}/ru/).
