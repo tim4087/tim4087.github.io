@@ -781,7 +781,7 @@ h2 {
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 12px;
+  padding: 5px 12px;
   border: 1px solid #ffffff26;
   border-radius: 6px;
   background: #ffffff0f;
@@ -797,5 +797,5 @@ h2 {
 }
 
 .blog-button .card-copy {
-  font-size: 14px;
+  font-size: 13px;
 }
