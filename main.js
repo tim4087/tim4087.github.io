@@ -311,7 +311,7 @@
     blogBtn.setAttribute('href', l === 'en' ? '/blog/' : '/blog/' + l + '/');
   }
 
-  fetch('/blog/search.json')
+  fetch('/blog/search.json?nocache=' + Date.now())
     .then(function (r) { return r.json(); })
     .then(function (posts) {
       cache = { ru: 0, en: 0, es: 0 };
