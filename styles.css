@@ -799,3 +799,14 @@ h2 {
 .blog-button .card-copy {
   font-size: 13px;
 }
+
+.blog-count {
+  color: #9aa0aa;
+  font-size: 13px;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+}
+
+#blog-post-count {
+  font-variant-numeric: tabular-nums;
+}

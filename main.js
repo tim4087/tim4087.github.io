@@ -285,6 +285,53 @@
 })();
 
 /* ============================================================
+   Счётчик постов в кнопке «Блог // Новости»: подтягивается из
+   /blog/search.json и обновляется при смене языка визитки.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  var countEl = document.getElementById('blog-post-count');
+  var blogBtn = document.querySelector('.blog-button');
+  if (!countEl || !blogBtn) return;
+
+  var cache = null;
+
+  function currentLang() {
+    var l = document.documentElement.getAttribute('lang') || 'ru';
+    if (l === 'ru' || l === 'es' || l === 'en') return l;
+    return 'en';
+  }
+
+  function render() {
+    if (!cache) return;
+    var l = currentLang();
+    countEl.textContent = cache[l] || 0;
+    /* кнопка ведёт на главную того же языка */
+    blogBtn.setAttribute('href', l === 'en' ? '/blog/' : '/blog/' + l + '/');
+  }
+
+  fetch('/blog/search.json')
+    .then(function (r) { return r.json(); })
+    .then(function (posts) {
+      cache = { ru: 0, en: 0, es: 0 };
+      posts.forEach(function (p) {
+        if (cache[p.lang] != null) cache[p.lang] += 1;
+      });
+      render();
+    })
+    .catch(function () {
+      countEl.textContent = '·';
+    });
+
+  document.querySelectorAll('.lang-switch button').forEach(function (button) {
+    button.addEventListener('click', function () {
+      setTimeout(render, 0);
+    });
+  });
+})();
+
+/* ============================================================
    Счётчики процентов в карточке языков: отсчитываются от 0
    до значения синхронно с заполнением полос.
    ============================================================ */
