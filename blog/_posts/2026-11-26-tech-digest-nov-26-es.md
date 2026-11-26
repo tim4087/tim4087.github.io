@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Digesto: control parental en X, Amazon declarada distribuidora, cámaras de 35$ que aprenden caras"
-date: 2026-11-26 19:30:00 +0300
+date: 2026-11-26 18:35:00 +0300
 lang: es
 ---
 

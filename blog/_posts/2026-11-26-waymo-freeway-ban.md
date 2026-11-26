@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Robotaxi vs. the Patrol: Why Waymo Got Kicked Off California's Freeways"
-date: 2026-11-26 19:10:00 +0300
+date: 2026-11-26 18:45:00 +0300
 lang: en
 ---
 

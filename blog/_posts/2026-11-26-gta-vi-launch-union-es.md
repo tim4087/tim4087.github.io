@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "GTA VI: 3.790 millones de dólares en un día — y los desarrolladores dijeron «no» al sindicato"
-date: 2026-11-26 19:20:00 +0300
+date: 2026-11-26 18:40:00 +0300
 lang: es
 ---
 

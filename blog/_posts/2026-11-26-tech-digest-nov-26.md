@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Digest: X's Parental Controls, Amazon Declared a Distributor, $35 Cameras Learn Faces"
-date: 2026-11-26 19:30:00 +0300
+date: 2026-11-26 18:35:00 +0300
 lang: en
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "GTA VI: $3.79 Billion in a Day — and the Developers Said 'No' to a Union"
-date: 2026-11-26 19:20:00 +0300
+date: 2026-11-26 18:40:00 +0300
 lang: en
 ---
 

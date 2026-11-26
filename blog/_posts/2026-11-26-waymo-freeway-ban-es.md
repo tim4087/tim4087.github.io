@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Robotaxi contra la patrulla: por qué echaron a Waymo de las autopistas de California"
-date: 2026-11-26 19:10:00 +0300
+date: 2026-11-26 18:45:00 +0300
 lang: es
 ---
 
